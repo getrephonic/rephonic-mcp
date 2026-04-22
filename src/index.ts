@@ -87,10 +87,30 @@ export class MyMCP extends McpAgent<Env, Record<string, never>, Props> {
 			},
 		);
 
-		// 4. Get Podcast
+		// 4a. Find Podcast (by external identifier)
+		this.server.tool(
+			"find_podcast",
+			"Find a Rephonic podcast from an external identifier: Apple/iTunes ID, Spotify ID, YouTube channel ID, or RSS feed URL. Use this whenever you already have one of those values — there is no need to call search_podcasts first. Pass exactly one of the four parameters. Returns `{podcasts: [...]}` — empty when no match; may contain multiple entries when a feed_url or youtube_channel_id is shared. Use the returned `id` with lookup_podcast and the other podcast tools.",
+			{
+				itunes_id: z.union([z.string(), z.number()]).optional().describe("Apple Podcasts / iTunes ID (numeric)."),
+				feed_url: z.string().optional().describe("Full RSS feed URL. Case-insensitive, trailing slashes ignored."),
+				spotify_id: z.string().optional().describe("Spotify show ID (the 22-character identifier, not the URL)."),
+				youtube_channel_id: z.string().optional().describe("YouTube channel ID (starts with 'UC')."),
+			},
+			async ({ itunes_id, feed_url, spotify_id, youtube_channel_id }) => {
+				return this.apiFetch("/api/podcasts/lookup/", {
+					itunes_id: itunes_id?.toString(),
+					feed_url,
+					spotify_id,
+					youtube_channel_id,
+				});
+			},
+		);
+
+		// 4b. Get Podcast (by Rephonic slug)
 		this.server.tool(
 			"lookup_podcast",
-			"Look up a podcast's metadata, chart rankings, and latest episodes by its Rephonic ID (e.g. 'huberman-lab'). Use the search_podcasts tool or ask the user if you don't know the ID.",
+			"Look up a podcast's metadata, chart rankings, and latest episodes by its Rephonic ID (e.g. 'huberman-lab'). If you have an Apple/iTunes ID, Spotify ID, YouTube channel ID, or RSS feed URL instead of a Rephonic ID, use find_podcast first to resolve it. If you only know the name, use search_podcasts.",
 			{ podcast_id: z.string().describe("The Rephonic podcast ID, e.g. 'huberman-lab'.") },
 			async ({ podcast_id }) => {
 				return this.apiFetch(`/api/podcasts/${encodeURIComponent(podcast_id)}/`);

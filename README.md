@@ -20,6 +20,7 @@ This is a remote Model Context Protocol (MCP) server that connects AI assistants
 - **search_podcasts** — Search for podcasts by topic, title, or publisher with advanced filters.
 - **search_episodes** — Search for episodes by keyword across titles, show notes, and transcripts.
 - **autocomplete** — Get suggested keywords and matching podcasts for a search query.
+- **find_podcast** — Resolve a Rephonic podcast from an Apple/iTunes ID, Spotify ID, YouTube channel ID, or RSS feed URL. Use this first when you already have one of those identifiers.
 - **lookup_podcast** — Look up a podcast's metadata, chart rankings, and latest episodes by its Rephonic ID.
 - **podcast_people** — Get hosts and guests of a podcast with contact details and social profiles.
 - **podcast_demographics** — Get estimated listener demographics (age, education, profession, income, location).
@@ -135,35 +136,4 @@ After changing `wrangler.jsonc`:
 npm run cf-typegen
 ```
 
-</details>
-<details>
-<summary><h3>Deployment</h3></summary>
-
-### First-time setup
-
-1. Log in to Cloudflare:
-   ```bash
-   npx wrangler login
-   ```
-
-2. Create the KV namespace for OAuth state:
-   ```bash
-   npx wrangler kv namespace create OAUTH_KV
-   ```
-   Copy the `id` into `wrangler.jsonc`.
-
-3. Set the cookie encryption secret:
-   ```bash
-   npx wrangler secret put COOKIE_ENCRYPTION_KEY
-   ```
-   Enter any random string when prompted (e.g. `openssl rand -hex 32`).
-
-4. Add a Custom Domain in the Cloudflare dashboard:
-   Workers & Pages → `rephonic-mcp` → Settings → Domains & Routes → Add `mcp.rephonic.com`.
-
-### Deploy
-
-```bash
-npm run deploy
-```
 </details>
