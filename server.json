@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.rephonic/rephonic",
+  "title": "Rephonic",
+  "description": "Research 3M+ podcasts with audience data, contacts, episodes, transcripts, charts, and sponsors.",
+  "version": "1.0.0",
+  "websiteUrl": "https://rephonic.com",
+  "repository": {
+    "url": "https://github.com/getrephonic/rephonic-mcp",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.rephonic.com"
+    }
+  ]
+}
