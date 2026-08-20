@@ -1,7 +1,7 @@
 {
   "name": "rephonic",
   "version": "1.0.0",
-  "description": "Give AI agents and LLMs access to podcast data from Rephonic — covering 3+ million podcasts with listener estimates, demographics, contact details, chart rankings, episodes, and more.",
+  "description": "Give AI agents and LLMs access to podcast data from Rephonic — covering 4+ million podcasts with listener estimates, demographics, contact details, chart rankings, episodes, and more.",
   "homepage": "https://rephonic.com",
   "repository": "https://github.com/getrephonic/rephonic-mcp",
   "license": "MIT",

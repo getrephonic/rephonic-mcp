@@ -1,6 +1,6 @@
 # Rephonic MCP Server
 
-Give AI agents and LLMs access to podcast data from [Rephonic](https://rephonic.com) — covering 3+ million podcasts with listener estimates, demographics, contact details, chart rankings, episodes, and more.
+Give AI agents and LLMs access to podcast data from [Rephonic](https://rephonic.com) — covering 4+ million podcasts with listener estimates, demographics, contact details, chart rankings, episodes, and more.
 
 This is a remote Model Context Protocol (MCP) server that connects AI assistants like Claude, ChatGPT, and Cursor to the [Rephonic API](https://rephonic.com/developers).
 
