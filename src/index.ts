@@ -27,6 +27,7 @@ export class MyMCP extends McpAgent<Env, Record<string, never>, Props> {
 			headers: {
 				"X-Rephonic-Api-Key": this.props!.apiKey,
 				"X-Rephonic-Api-Version": "1.1",
+				"X-Origin-Auth": this.env.ORIGIN_SECRET,
 			},
 		});
 		if (!resp.ok) {

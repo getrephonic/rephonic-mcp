@@ -1,1 +1,5 @@
 COOKIE_ENCRYPTION_KEY=<any-random-string-for-signing-cookies>
+# Proves to api.rephonic.com that a request came through Cloudflare. The
+# zone's Transform Rule that normally adds it skips subrequests from Workers
+# in the same zone, so this Worker sends it itself.
+ORIGIN_SECRET=<the value in CLOUDFLARE_ORIGIN_SECRET in rephonic-web>

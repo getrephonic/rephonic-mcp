@@ -7,6 +7,7 @@
   /**
    * Secrets needed:
    * npx wrangler secret put COOKIE_ENCRYPTION_KEY
+   * npx wrangler secret put ORIGIN_SECRET
    */
   "migrations": [
     {

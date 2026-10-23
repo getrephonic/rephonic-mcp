@@ -10,10 +10,12 @@ declare namespace Cloudflare {
 		OAUTH_KV: KVNamespace;
 		MCP_OBJECT: DurableObjectNamespace<import("./src/index").MyMCP>;
 		COOKIE_ENCRYPTION_KEY: string;
+		ORIGIN_SECRET: string;
 	}
 }
 interface Env extends Cloudflare.Env {
 	COOKIE_ENCRYPTION_KEY: string;
+	ORIGIN_SECRET: string;
 }
 
 // Begin runtime types

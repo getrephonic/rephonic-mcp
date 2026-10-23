@@ -107,7 +107,10 @@ app.post("/submit-api-key", async (c) => {
 
     // Verify the API key works before completing the OAuth flow
     const quotaResp = await fetch("https://api.rephonic.com/api/accounts/quota/", {
-      headers: { "X-Rephonic-Api-Key": apiKey.trim() },
+      headers: {
+        "X-Rephonic-Api-Key": apiKey.trim(),
+        "X-Origin-Auth": c.env.ORIGIN_SECRET,
+      },
     });
     if (!quotaResp.ok) {
       return renderApiKeyForm(stateToken, {}, "Invalid API key. Please check your key and try again.");
