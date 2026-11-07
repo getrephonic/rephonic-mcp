@@ -5,7 +5,7 @@
 // instead of the OAuth flow.
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { registerRephonicTools, type ToolResult } from "./tools";
+import { REPHONIC_INSTRUCTIONS, registerRephonicTools, type ToolResult } from "./tools";
 
 declare const process: {
 	env: Record<string, string | undefined>;
@@ -42,7 +42,7 @@ async function apiFetch(
 	return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
 }
 
-const server = new McpServer({ name: "Rephonic", version: "1.0.0" });
+const server = new McpServer({ name: "Rephonic", version: "1.0.0" }, { instructions: REPHONIC_INSTRUCTIONS });
 registerRephonicTools(server, apiFetch);
 
 // No top-level await: tsx transpiles this to CommonJS (package.json has no

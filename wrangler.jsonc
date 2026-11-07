@@ -8,6 +8,9 @@
    * Secrets needed:
    * npx wrangler secret put COOKIE_ENCRYPTION_KEY
    * npx wrangler secret put ORIGIN_SECRET
+   *
+   * Domain-verification token from OpenAI's plugin portal (keep it set):
+   * npx wrangler secret put OPENAI_APPS_CHALLENGE
    */
   "migrations": [
     {
