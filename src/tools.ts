@@ -210,7 +210,7 @@ export function registerRephonicTools(server: McpServer, apiFetch: ApiFetch) {
 	registerTool(
 		"contacts",
 		"Get podcast contacts",
-		"Returns a podcast's email contacts and contact pages as one list ranked best first (each with a `medium` of `email` or `page`), plus its social media accounts. Includes quality indicators: `badges` (`best` is the contact we recommend reaching out to first, `pitch_guests` and `pitch_sponsors` mark the best way to pitch a guest or ask about advertising, `replies_to_pitches` marks an email that has answered pitches), `verification_status` (email deliverability), `concierge` (added by Rephonic staff), `warning` (likely invalid), and `upvotes`/`downvotes`.",
+		"Returns a podcast's email contacts and contact pages as one list ranked best first (each with a `medium` of `email` or `page`), plus its social media accounts. Includes quality indicators: `badges` (`best` is the contact we recommend reaching out to first, `pitch_guests` and `pitch_sponsors` mark the best way to pitch a guest or ask about advertising, `replies_to_pitches` marks an email that has answered pitches), `verification_status` (email deliverability), `warning` (likely invalid), and `upvotes`/`downvotes`.",
 		{ podcast_id: z.string().describe("The Rephonic podcast ID.") },
 		async ({ podcast_id }) => {
 			return apiFetch("/api/contacts/", { podcast_id });
