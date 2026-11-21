@@ -28,7 +28,7 @@ This is a remote Model Context Protocol (MCP) server that connects AI assistants
 - **list_episodes** — List all episodes for a podcast in chronological order.
 - **get_episode** — Look up metadata for an individual episode.
 - **episode_transcript** — Get the full transcript for an episode.
-- **contacts** — Get email contacts, contact pages, and social accounts for a podcast.
+- **contacts** — Get email contacts and contact pages, ranked best first, plus social accounts for a podcast.
 - **social_accounts** — Get social media accounts linked to a podcast with follower/engagement metrics.
 - **feedback** — Get overall ratings and AI-generated review summaries for a podcast.
 - **reviews** — Get individual listener reviews from various apps.
