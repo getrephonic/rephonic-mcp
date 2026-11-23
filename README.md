@@ -28,7 +28,7 @@ This MCP server lets AI assistants like Claude, ChatGPT and Cursor use the [Reph
 - `episode_transcript` gets an episode's full transcript.
 - `contacts` gets a podcast's email addresses and contact pages, best first, plus its social accounts.
 - `social_accounts` gets a podcast's social accounts with follower and engagement numbers.
-- `feedback` gets a podcast's ratings in each app and AI-written summaries of its reviews.
+- `feedback` gets a podcast's ratings in each app and a summary of its reviews.
 - `reviews` gets listener reviews from Apple Podcasts, Podchaser, Castbox, Audible and Podcast Addict.
 - `trends` gets the history of a podcast's listener estimate, social reach or Spotify followers.
 - `shared_audience_graph` gets podcasts that share listeners with a podcast.

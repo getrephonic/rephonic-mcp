@@ -76,14 +76,13 @@ export function registerRephonicTools(server: McpServer, apiFetch: ApiFetch) {
 			per_page: z.number().optional().describe("Results per page, max 100. Default: 50."),
 			page: z.number().optional().describe("Page number, starts at 1."),
 			filters: z.string().optional().describe("Search filters, comma-separated, in the same format as search_podcasts."),
-			highlight: z.boolean().optional().describe("If true, query matches in title, show notes and transcript are returned with HTML <b> tags."),
 			podcast_id: z.string().optional().describe("Scope results to a single podcast by its Rephonic ID (e.g. 'the-daily')."),
 			threshold: z.number().optional().describe("Only return episodes published within the last N seconds. Max 1209600 (14 days)."),
 		},
-		async ({ query, per_page, page, filters, highlight, podcast_id, threshold }) => {
+		async ({ query, per_page, page, filters, podcast_id, threshold }) => {
 			return apiFetch("/api/search/episodes/", {
 				query, per_page: per_page?.toString(), page: page?.toString(), filters,
-				highlight: highlight?.toString(), podcast_id, threshold: threshold?.toString(),
+				podcast_id, threshold: threshold?.toString(),
 			});
 		},
 	);
@@ -127,7 +126,7 @@ export function registerRephonicTools(server: McpServer, apiFetch: ApiFetch) {
 	registerTool(
 		"lookup_podcast",
 		"Get podcast details",
-		"Look up a podcast's details and latest episode by its Rephonic ID (e.g. 'huberman-lab'). Includes estimated listeners (`downloads_per_episode`, `weekly_downloads`), `entities` (the production company, network, ad-sales agency or talent agency behind the show), `links` (website and media kit), and `badges` (`frequently_pitched`, `guests_booked`). The `guests` and `sponsors` blocks say whether the show takes guests or advertisers (`accepted`), describe its typical guests or ads (`profile`), and have an `outreach` block for pitching a guest or buying ads: `pitchable` (false when the show has said it does not take these pitches), `instructions` (a short how-to) and `contacts` (best first, same shape as the contacts tool). `guests.outreach` is null when we found no way to pitch a guest, and `sponsors.outreach` is null when we found no way to ask about ads. If we found neither, `guests.outreach` lists the podcast's best general contacts instead. For chart positions use podcast_rankings. If you have an Apple/iTunes ID, Spotify ID, YouTube channel ID, or RSS feed URL instead of a Rephonic ID, use find_podcast first to resolve it. If you only know the name, use search_podcasts.",
+		"Look up a podcast's details and latest episode by its Rephonic ID (e.g. 'huberman-lab'). Includes estimated listeners (`downloads_per_episode`, `weekly_downloads`), `entities` (the production company, network, ad-sales agency or talent agency behind the show), `links` (website and media kit), and `badges` (`frequently_pitched` means Rephonic users pitch the show often, `guests_booked` means Rephonic customers have landed guest spots on it). The `guests` and `sponsors` blocks say whether the show takes guests or advertisers (`accepted`), describe its typical guests or ads (`profile`), and have an `outreach` block for pitching a guest or buying ads: `pitchable` (false when the show has said it does not take these pitches), `instructions` (a short how-to) and `contacts` (best first, same shape as the contacts tool). `guests.outreach` is null when we found no way to pitch a guest, and `sponsors.outreach` is null when we found no way to ask about ads. If we found neither, `guests.outreach` lists the podcast's best general contacts instead. For chart positions use podcast_rankings. If you have an Apple/iTunes ID, Spotify ID, YouTube channel ID, or RSS feed URL instead of a Rephonic ID, use find_podcast first to resolve it. If you only know the name, use search_podcasts.",
 		{ podcast_id: z.string().describe("The Rephonic podcast ID, e.g. 'huberman-lab'.") },
 		async ({ podcast_id }) => {
 			return apiFetch(`/api/podcasts/${encodeURIComponent(podcast_id)}/`);
@@ -138,7 +137,7 @@ export function registerRephonicTools(server: McpServer, apiFetch: ApiFetch) {
 	registerTool(
 		"podcast_people",
 		"Get hosts, crew and guests",
-		"Returns the hosts, crew and guests of a podcast, each with a name, description, contact emails and pages, and social media profiles. Hosts and crew have a `kind` (`host` for hosts; `producer`, `exec-producer`, `booker`, `editor`, `ad-sales` or `crew` for crew) and a `role` label. `is_lead` is true for the host or hosts the show is known for today. On a show with one or two main hosts and others who rotate in, only the main hosts are true. On a show where several hosts take turns and none is the main one, every current host is true. Other hosts, such as former hosts, are false. Crew, and the hosts of podcasts we have not researched yet, are null. The `guests` block says whether the show takes guests (`accepted`), describes its typical guests (`profile`), and lists recent guests with affiliation, industry and the episode they appeared on. We find this data automatically, so some of it can be wrong.",
+		"Returns the hosts, crew and guests of a podcast, each with a name, description, contact emails and pages, and social media profiles. Hosts and crew have a `kind` (`host` for hosts; `producer`, `exec-producer`, `booker`, `editor`, `ad-sales` or `crew` for crew) and a `role` label. `is_lead` is true for the host or hosts the show is known for today. On a show with one or two main hosts and others who rotate in, only the main hosts are true. On a show where several hosts take turns and none is the main one, every current host is true. Other hosts, such as former hosts, are false. Crew are null, and so are hosts when we don't know yet which of them leads the show. The `guests` block says whether the show takes guests (`accepted`), describes its typical guests (`profile`), and lists recent guests with affiliation, industry and the episode they appeared on. We find this data automatically, so some of it can be wrong.",
 		{ podcast_id: z.string().describe("The Rephonic podcast ID.") },
 		async ({ podcast_id }) => {
 			return apiFetch(`/api/podcasts/${encodeURIComponent(podcast_id)}/people/`);
@@ -222,7 +221,7 @@ export function registerRephonicTools(server: McpServer, apiFetch: ApiFetch) {
 	registerTool(
 		"contacts",
 		"Get podcast contacts",
-		"Returns a podcast's email contacts and contact pages as one list ranked best first (each with a `medium` of `email` or `page`), plus its social media accounts. Includes quality indicators: `badges` (`best` is the contact we recommend reaching out to first, `pitch_guests` and `pitch_sponsors` mark the best way to pitch a guest or ask about advertising, `replies_to_pitches` marks an email that has answered pitches), `verification_status` (email deliverability), `warning` (likely invalid), and `upvotes`/`downvotes`. Each contact has a `role` and may name the `person` or `entity` (e.g. the ad-sales agency) it belongs to.",
+		"Returns a podcast's email contacts and contact pages as one list ranked best first (each with a `medium` of `email` or `page`), plus its social media accounts. Includes quality indicators: `badges` (`best` is the contact we recommend reaching out to first, `pitch_guests` and `pitch_sponsors` mark the best way to pitch a guest or ask about advertising, `replies_to_pitches` marks an email address where a real person has answered a pitch sent through Rephonic), `verification_status` (email deliverability), `warning` (likely invalid), and `upvotes`/`downvotes`. Each contact has a `role` and may name the `person` or `entity` (e.g. the ad-sales agency) it belongs to.",
 		{ podcast_id: z.string().describe("The Rephonic podcast ID.") },
 		async ({ podcast_id }) => {
 			return apiFetch("/api/contacts/", { podcast_id });
@@ -244,7 +243,7 @@ export function registerRephonicTools(server: McpServer, apiFetch: ApiFetch) {
 	registerTool(
 		"feedback",
 		"Get ratings summary",
-		"Returns the podcast's rating and its number of ratings and reviews in each app (Apple Podcasts, Spotify, Podchaser and others), plus AI-written summaries of what reviewers say.",
+		"Returns the podcast's rating and its number of ratings and reviews in each app: Apple Podcasts (`apple`), Spotify (`spotify`), Podchaser (`podchaser`), Podcast Addict (`podaddict`), Castbox (`castbox`) and Audible (`audible`). Not every app has a rating. `insights` has a few sentences that sum up what reviewers say.",
 		{ podcast_id: z.string().describe("The Rephonic podcast ID.") },
 		async ({ podcast_id }) => {
 			return apiFetch("/api/feedback/", { podcast_id });
@@ -272,7 +271,7 @@ export function registerRephonicTools(server: McpServer, apiFetch: ApiFetch) {
 		"Returns the history of the chosen metrics for up to 3 podcasts. Each metric returns an array of [unix_timestamp, value] pairs.",
 		{
 			podcast_ids: z.string().describe("Comma-separated list of podcast IDs. Maximum 3."),
-			metrics: z.string().describe("Comma-separated list of metrics. Allowed: downloads_per_episode, social_reach, spotify_followers."),
+			metrics: z.string().describe("Comma-separated list of metrics. Allowed: social_reach, spotify_followers."),
 		},
 		async ({ podcast_ids, metrics }) => {
 			return apiFetch("/api/trends/", { podcast_ids, metrics });
